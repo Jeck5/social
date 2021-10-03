@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+<h1>Login page</h1>
+<form name='form-login' action="login" method='POST'>
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td><input type='text' name='login' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit" /></td>
+        </tr>
+    </table>
+</form>
+<h1>Don't have login?</h1>
+<form action="/auth/register" method="POST">
+    <button type="submit">Registration</button>
+</form>
+</body>
+</html>
