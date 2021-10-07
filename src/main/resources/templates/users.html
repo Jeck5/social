@@ -9,41 +9,38 @@
 <h1>User page</h1>
 <br>
 <div th:object="${userDto}">
-    <div>
-        <label th:text="login">login</label><br>
-        <output th:field="*{login}"/>
-
-    </div>
-    <div>
-        <label th:text="firstName">first</label><br>
-        <output th:field="*{firstName}"/>
-
-    </div>
-    <div>
-        <label th:text="lastName">last</label><br>
-        <output th:field="*{lastName}"/>
-
-    </div>
-    <div>
-        <label th:text="age">age</label><br>
-        <output th:field="*{age}"/>
-
-    </div>
-    <div>
-        <label th:text="gender">gender</label><br>
-        <output th:field="*{gender}"/>
-
-    </div>
-    <div>
-        <label th:text="interests">interests</label><br>
-        <output th:field="*{interests}"/>
-
-    </div>
-    <div>
-        <label th:text="city">city</label><br>
-        <output th:field="*{city}"/>
-    </div>
+    <table>
+        <tr>
+            <td>login: </td>
+            <td><span th:text="*{login}"></span></td>
+        </tr>
+        <tr>
+            <td>firstName: </td>
+            <td><span th:text="*{firstName}"></span></td>
+        </tr>
+        <tr>
+            <td>lastName: </td>
+            <td><span th:text="*{lastName}"></span></td>
+        </tr>
+        <tr>
+            <td>age: </td>
+            <td><span th:text="*{age}"></span></td>
+        </tr>
+        <tr>
+            <td>gender: </td>
+            <td><span th:text="*{gender}"></span></td>
+        </tr>
+        <tr>
+            <td>interests: </td>
+            <td><span th:text="*{interests}"></span></td>
+        </tr>
+        <tr>
+            <td>city: </td>
+            <td><span th:text="*{city}"></span></td>
+        </tr>
+    </table>
 </div>
+<br>
 <form action="/auth/logout" method="POST">
     <button type="submit">Logout</button>
 </form>

@@ -38,12 +38,12 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("/{page}")
+    @GetMapping("/{page}") //TODO delete
     List<UUID> getPage(@PathVariable("page") UUID page, Model model) {
         return asList(UUID.randomUUID(), UUID.randomUUID());
     }
 
-    @PreAuthorize("hasAuthority('users:read')")
+    @PreAuthorize("hasAuthority('users:read')") //TODO search?
     @GetMapping("/all")
     List<UUID> getPages() {
         return asList(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
