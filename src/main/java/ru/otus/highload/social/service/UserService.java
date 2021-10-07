@@ -1,14 +1,15 @@
-package ru.otus.highload.social.repository;
+package ru.otus.highload.social.service;
 
 import ru.otus.highload.social.model.User;
 
 import java.util.List;
 
-public interface UserRepository {
+public interface UserService {
 
     User getUserByLogin(String login);
 
     User saveUser(User user);
 
     List<User> getAllUsers();
+
 }

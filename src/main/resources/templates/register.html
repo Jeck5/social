@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registration page</title>
 </head>
 <body>
 <h1>Registration page</h1>
-
+<form action="/auth/confirm" th:object="${userDto}" method="POST" enctype="utf8">
+    <div>
+        <label th:text="login">login</label><br>
+        <input th:field="*{login}"/>
+        <p th:each="error : ${#fields.errors('login')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="password">password</label><br>
+        <input type="password" th:field="*{password}"/>
+        <p th:each="error : ${#fields.errors('password')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="firstName">first</label><br>
+        <input th:field="*{firstName}"/>
+        <p th:each="error: ${#fields.errors('firstName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="lastName">last</label><br>
+        <input th:field="*{lastName}"/>
+        <p th:each="error : ${#fields.errors('lastName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="age">age</label><br>
+        <input th:field="*{age}"/>
+        <p th:each="error : ${#fields.errors('age')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="gender">gender</label><br>
+        <input th:field="*{gender}"/>
+        <p th:each="error : ${#fields.errors('gender')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="interests">interests</label><br>
+        <input th:field="*{interests}"/>
+        <p th:each="error : ${#fields.errors('interests')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="city">city</label><br>
+        <input th:field="*{city}"/>
+        <p th:each="error : ${#fields.errors('city')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <br>
+    <button type="submit" th:text="submit">submit</button>
+</form>
 </body>
 </html>

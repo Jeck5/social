@@ -30,8 +30,18 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
 
     @Override
     public User saveUser(User user) {
+        USER_LIST.removeIf(u -> u.getLogin().equalsIgnoreCase(user.getLogin()));
         user.setId(UUID.randomUUID());
+        user.setRole(Role.USER);
+        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
         USER_LIST.add(user);
         return user;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return USER_LIST;
+    }
+
+
 }
