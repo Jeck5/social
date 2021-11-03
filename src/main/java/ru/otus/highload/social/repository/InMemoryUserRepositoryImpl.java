@@ -12,15 +12,15 @@ import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
-@Component
-public class InMemoryUserRepositoryImpl implements UserRepository {
+//@Component
+public class InMemoryUserRepositoryImpl {//} implements UserRepository {
 
     private static final List<User> USER_LIST = new ArrayList<>(Collections.singletonList(
             User.builder().login("user1").password(new BCryptPasswordEncoder(12).encode("user1"))
-                    .id(UUID.randomUUID()).role(Role.USER).build()
+                    .id(32L).role(Role.USER).build()
     ));
 
-    @Override
+    //@Override
     public User getUserByLogin(String login) {
         return USER_LIST.stream()
                 .filter(user -> user.getLogin().equalsIgnoreCase(login))
@@ -28,17 +28,17 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
                 .orElseThrow();
     }
 
-    @Override
+    //@Override
     public User saveUser(User user) {
         USER_LIST.removeIf(u -> u.getLogin().equalsIgnoreCase(user.getLogin()));
-        user.setId(UUID.randomUUID());
+        user.setId(32L);
         user.setRole(Role.USER);
         user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
         USER_LIST.add(user);
         return user;
     }
 
-    @Override
+    //@Override
     public List<User> getAllUsers() {
         return USER_LIST;
     }

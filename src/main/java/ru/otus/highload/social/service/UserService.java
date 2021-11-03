@@ -12,4 +12,5 @@ public interface UserService {
 
     List<User> getAllUsers();
 
+    void addToFriends(long friendId);
 }

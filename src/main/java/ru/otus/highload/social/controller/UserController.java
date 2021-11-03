@@ -30,7 +30,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users/{login}")
+    @GetMapping("/users/{login}") //TODO secure?
     String getByLogin(@PathVariable("login") String login, Model model) {
         User user = userService.getUserByLogin(login);
         UserDto userDto = dtoFromUser(user);
@@ -53,6 +53,13 @@ public class UserController {
     @GetMapping("/suc")
     String getPageSuccess() {
         return "success";
+    }
+
+    @PreAuthorize("hasAuthority('users:read')")
+    @PostMapping("/add-to-friends/{friend-id}")
+    String addUserToFriends(@PathVariable("friend-id") long friendId) {
+        userService.addToFriends(friendId);
+        return "success";//TODO? надо на эту же страницу
     }
 
     @GetMapping("/auth/login")

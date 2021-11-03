@@ -1,15 +1,17 @@
 package ru.otus.highload.social.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
-    UUID id;
+    Long id;
 
     String login;
 
