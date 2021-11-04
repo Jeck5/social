@@ -67,7 +67,7 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/auth/register")
+    @GetMapping("/auth/register")
     public String getRegistrationPage(Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
@@ -79,12 +79,15 @@ public class UserController {
         return "success";
     }
 
-    @PostMapping("/auth/confirm")
+    @PostMapping("/auth/register")
     @SneakyThrows
-    public String registerNewUser(@ModelAttribute @Valid UserDto userDto, Model model,
+    public String registerNewUser(@ModelAttribute @Valid UserDto userDto,
                                         BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                                        HttpServletRequest request) {
-
+                                        HttpServletRequest request, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDto", userDto);
+            return "register";
+        }
         model.addAttribute("userDto", userDto);
         User user = userFromDto(userDto);
         userService.saveUser(user);
