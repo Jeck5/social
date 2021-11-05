@@ -6,4 +6,6 @@ public interface FriendsRepository {
 
     void createFriendRecord(long first, long second);
 
+    void removeFriendRecord(long first, long second);
+
 }

@@ -39,6 +39,20 @@
             <td><span th:text="*{city}"></span></td>
         </tr>
     </table>
+    <br>
+    Friends:
+    <br>
+    <table style="color: green" id="each">
+        <tr th:each="friend : *{friends}">
+            <td th:text="${friend.login}"></td>
+            <td><a th:href="@{/users/{path}(path=${friend.login})}">view</a></td> <!--TODO login in link?-->
+        </tr>
+    </table>
+    <br>
+    Visit page by login:
+    <a th:href="@{/users/{path}(path=${friend.login})}">view</a>
+    <br>
+
 </div>
 <br>
 <form action="/auth/logout" method="POST">

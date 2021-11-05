@@ -26,6 +26,13 @@ public class JdbcFriendsRepositoryImpl implements FriendsRepository {
         jdbcTemplate.update("insert into friends (id1,id2) values (?1, ?2)", min, max);
     }
 
+    @Override
+    public void removeFriendRecord(long first, long second) {
+        Long min = getMin(first, second);
+        Long max = getMax(first, second);
+        jdbcTemplate.update("delete from friends where id1=?1 and id2=?2)", min, max);
+    }
+
     private long getMin(long first, long second) {
         return Math.min(first, second);
     }

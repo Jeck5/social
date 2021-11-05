@@ -1,5 +1,6 @@
 package ru.otus.highload.social.service;
 
+import ru.otus.highload.social.dto.UserWithFriendsDto;
 import ru.otus.highload.social.model.User;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface UserService {
     List<User> getAllUsers();
 
     void addToFriends(long friendId);
+
+    void removeFromFriends(long friendId);
+
+    void enrichWithFriends(UserWithFriendsDto userWithFriendsDto);
 }

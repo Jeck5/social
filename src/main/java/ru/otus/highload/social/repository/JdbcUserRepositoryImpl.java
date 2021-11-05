@@ -7,15 +7,18 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import ru.otus.highload.social.dto.FriendDto;
 import ru.otus.highload.social.model.User;
 
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcUserRepositoryImpl implements UserRepository{
+public class JdbcUserRepositoryImpl implements UserRepository {
 
-    private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
+    private static final BeanPropertyRowMapper<User> USER_ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
+
+    private static final BeanPropertyRowMapper<FriendDto> FRIEND_ROW_MAPPER = BeanPropertyRowMapper.newInstance(FriendDto.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -25,7 +28,7 @@ public class JdbcUserRepositoryImpl implements UserRepository{
 
     @Override
     public User getUserByLogin(String login) {
-        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE login=?", ROW_MAPPER, login);
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE login=?", USER_ROW_MAPPER, login);
     }
 
     @Override
@@ -40,6 +43,13 @@ public class JdbcUserRepositoryImpl implements UserRepository{
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        return null;//TODO needed?
+    }
+
+    @Override
+    public List<FriendDto> findAllFriends(Long id) {
+        return jdbcTemplate.query("SELECT id, login FROM users WHERE id IN( " +
+                "SELECT id1 FROM friends where id2=? UNION ALL " +
+                "SELECT id2 FROM friends where id1=?)", FRIEND_ROW_MAPPER, id, id);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.otus.highload.social.dto.UserDto;
+import ru.otus.highload.social.dto.UserWithFriendsDto;
 import ru.otus.highload.social.model.User;
 import ru.otus.highload.social.service.UserService;
 
@@ -30,15 +31,19 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users/{login}") //TODO secure?
+    @GetMapping("/users/{login}")
+        //TODO secure?
     String getByLogin(@PathVariable("login") String login, Model model) {
         User user = userService.getUserByLogin(login);
-        UserDto userDto = dtoFromUser(user);
-        model.addAttribute("userDto", userDto);
+        UserWithFriendsDto userWithFriendsDto = dtoFromUser(user);
+        //TODO find frends and enrich
+        userService.enrichWithFriends(userWithFriendsDto);
+        model.addAttribute("userDto", userWithFriendsDto);
         return "users";
     }
 
-    @GetMapping("/{page}") //TODO delete
+    @GetMapping("/{page}")
+        //TODO delete
     List<UUID> getPage(@PathVariable("page") UUID page, Model model) {
         return asList(UUID.randomUUID(), UUID.randomUUID());
     }
@@ -59,7 +64,7 @@ public class UserController {
     @PostMapping("/add-to-friends/{friend-id}")
     String addUserToFriends(@PathVariable("friend-id") long friendId) {
         userService.addToFriends(friendId);
-        return "success";//TODO? надо на эту же страницу
+        return "success";//TODO? надо на эту же страницу + как-то зполнить оишбку и вывести + удаление сделать
     }
 
     @GetMapping("/auth/login")
@@ -82,8 +87,8 @@ public class UserController {
     @PostMapping("/auth/register")
     @SneakyThrows
     public String registerNewUser(@ModelAttribute @Valid UserDto userDto,
-                                        BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                                        HttpServletRequest request, Model model) {
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                  HttpServletRequest request, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("userDto", userDto);
             return "register";
@@ -109,8 +114,9 @@ public class UserController {
                 .build();
     }
 
-    private UserDto dtoFromUser(User user) {
-        return UserDto.builder()
+    private UserWithFriendsDto dtoFromUser(User user) {
+        return UserWithFriendsDto.builder()
+                .id(user.getId())
                 .age(user.getAge())
                 .city(user.getCity())
                 .gender(user.getGender())

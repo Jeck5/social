@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.highload.social.dto.UserWithFriendsDto;
 import ru.otus.highload.social.model.Role;
 import ru.otus.highload.social.model.SecurityUser;
 import ru.otus.highload.social.model.User;
@@ -50,14 +51,33 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void addToFriends(long friendId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        User currentUser = getUserByLogin(currentUserName);
-        if (currentUser.getId() == friendId || friendsRepository.friendRecordExists(currentUser.getId(), friendId)) {
+        Long currentUserId = getCurrentUserId();
+        if (currentUserId == friendId || friendsRepository.friendRecordExists(currentUserId, friendId)) {
             throw new UnsupportedOperationException(
-                    "Same user or already friends: " + currentUser.getId() + " and " + friendId);
+                    "Same user or already friends: " + currentUserId + " and " + friendId);
         } else {
-            friendsRepository.createFriendRecord(currentUser.getId(), friendId);
+            friendsRepository.createFriendRecord(currentUserId, friendId);
         }
+    }
+
+    @Override
+    public void removeFromFriends(long friendId) {
+        Long currentUserId = getCurrentUserId();
+        if (currentUserId == friendId || !friendsRepository.friendRecordExists(currentUserId, friendId)) {
+            throw new UnsupportedOperationException(
+                    "Same user or already not friends: " + currentUserId + " and " + friendId);
+        } else {
+            friendsRepository.removeFriendRecord(currentUserId, friendId);
+        }
+    }
+
+    @Override
+    public void enrichWithFriends(UserWithFriendsDto userWithFriendsDto) {
+        userWithFriendsDto.setFriends(userRepository.findAllFriends(userWithFriendsDto.getId()));
+    }
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return getUserByLogin(authentication.getName()).getId();
     }
 }

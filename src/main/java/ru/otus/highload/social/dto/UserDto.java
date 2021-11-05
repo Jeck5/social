@@ -1,9 +1,9 @@
 package ru.otus.highload.social.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ru.otus.highload.social.model.Gender;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,8 +12,10 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class UserDto { //TODO validation processing?
+
+    Long id;
 
     @Size(min = 3, max = 40)
     String login;
