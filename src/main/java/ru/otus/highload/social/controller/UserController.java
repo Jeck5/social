@@ -7,10 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.otus.highload.social.dto.UserDto;
@@ -19,7 +17,9 @@ import ru.otus.highload.social.model.User;
 import ru.otus.highload.social.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +29,7 @@ import static java.util.Arrays.asList;
 @RequiredArgsConstructor
 public class UserController {
 
+    public static final String FIND_BY_LOGIN = "find-by-login";
     private final UserService userService;
 
     @GetMapping("/users/{login}")
@@ -40,6 +41,25 @@ public class UserController {
         userService.enrichWithFriends(userWithFriendsDto);
         model.addAttribute("userDto", userWithFriendsDto);
         return "users";
+    }
+
+    @SneakyThrows
+    @GetMapping("/users")
+        //TODO secure?, TODO check exists
+    void find(@RequestParam("action") @NotEmpty String action, @RequestParam("value") @NotEmpty String value,
+              HttpServletResponse response) {
+
+        if (action.equalsIgnoreCase(FIND_BY_LOGIN)) {
+            User user = userService.getUserByLogin(value);
+            if (user == null) {
+                //response.sendRedirect("/users/" + userService.); //TODO not empty page or sth else when not found
+                return;
+            }
+            //TODO when error stay here + global error or filed error like with password in example
+            response.sendRedirect("/users/" + value);
+        } else {
+            throw new UnsupportedOperationException(action + " action is not supported");
+        }
     }
 
     @GetMapping("/{page}")

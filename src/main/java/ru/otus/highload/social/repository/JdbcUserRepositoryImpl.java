@@ -1,6 +1,7 @@
 package ru.otus.highload.social.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class JdbcUserRepositoryImpl implements UserRepository {
 
     private static final BeanPropertyRowMapper<User> USER_ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
@@ -28,7 +30,12 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByLogin(String login) {
-        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE login=?", USER_ROW_MAPPER, login);
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM users WHERE login=?", USER_ROW_MAPPER, login);
+        } catch (Exception e) {
+            log.warn("User not found by login {}", login);
+            return null;
+        }
     }
 
     @Override

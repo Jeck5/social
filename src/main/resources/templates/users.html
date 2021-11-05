@@ -44,16 +44,19 @@
     <br>
     <table style="color: green" id="each">
         <tr th:each="friend : *{friends}">
-            <td th:text="${friend.login}"></td>
-            <td><a th:href="@{/users/{path}(path=${friend.login})}">view</a></td> <!--TODO login in link?-->
+            <td><a th:href="@{/users/{path}(path=${friend.login})}">[[${friend.login}]]</a></td>
         </tr>
     </table>
     <br>
-    Visit page by login:
-    <a th:href="@{/users/{path}(path=${friend.login})}">view</a>
-    <br>
-
 </div>
+<br>
+Visit page by login:
+<form action="/users" method="get">
+    <input type="hidden" name="action" value="find-by-login" />
+    <input name="value" value="" />
+    <br>
+    <button type="submit">Find</button>
+</form>
 <br>
 <form action="/auth/logout" method="POST">
     <button type="submit">Logout</button>
