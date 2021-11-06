@@ -15,7 +15,7 @@ public class JdbcFriendsRepositoryImpl implements FriendsRepository {
         Long min = getMin(first, second);
         Long max = getMax(first, second);
         return jdbcTemplate.queryForObject(
-                "select count(*) > 0 from friends where id1=?1 and id2=?2",
+                "select count(*) > 0 from friends where id1=? and id2=?",
                 Boolean.class, min, max);
     }
 
@@ -23,14 +23,14 @@ public class JdbcFriendsRepositoryImpl implements FriendsRepository {
     public void createFriendRecord(long first, long second) {
         Long min = getMin(first, second);
         Long max = getMax(first, second);
-        jdbcTemplate.update("insert into friends (id1,id2) values (?1, ?2)", min, max);
+        jdbcTemplate.update("insert into friends (id1,id2) values (?, ?)", min, max);
     }
 
     @Override
     public void removeFriendRecord(long first, long second) {
         Long min = getMin(first, second);
         Long max = getMax(first, second);
-        jdbcTemplate.update("delete from friends where id1=?1 and id2=?2)", min, max);
+        jdbcTemplate.update("delete from friends where id1=? and id2=?", min, max);
     }
 
     private long getMin(long first, long second) {

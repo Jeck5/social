@@ -2,14 +2,12 @@ package ru.otus.highload.social.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.otus.highload.social.dto.UserDto;
 import ru.otus.highload.social.dto.UserWithFriendsDto;
@@ -31,13 +29,13 @@ public class UserController {
 
     public static final String FIND_BY_LOGIN = "find-by-login";
     private final UserService userService;
+    private final ApplicationContext applicationContext;
 
     @GetMapping("/users/{login}")
         //TODO secure?
     String getByLogin(@PathVariable("login") String login, Model model) {
         User user = userService.getUserByLogin(login);
         UserWithFriendsDto userWithFriendsDto = dtoFromUser(user);
-        //TODO find frends and enrich
         userService.enrichWithFriends(userWithFriendsDto);
         model.addAttribute("userDto", userWithFriendsDto);
         return "users";
@@ -62,12 +60,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{page}")
-        //TODO delete
-    List<UUID> getPage(@PathVariable("page") UUID page, Model model) {
-        return asList(UUID.randomUUID(), UUID.randomUUID());
-    }
-
     @PreAuthorize("hasAuthority('users:read')") //TODO search?
     @GetMapping("/all")
     List<UUID> getPages() {
@@ -84,7 +76,14 @@ public class UserController {
     @PostMapping("/add-to-friends/{friend-id}")
     String addUserToFriends(@PathVariable("friend-id") long friendId) {
         userService.addToFriends(friendId);
-        return "success";//TODO? надо на эту же страницу + как-то зполнить оишбку и вывести + удаление сделать
+        return "success";
+    }
+
+    @PreAuthorize("hasAuthority('users:read')")
+    @PostMapping("/delete-from-friends/{friend-id}")
+    String deleteUserFromFriends(@PathVariable("friend-id") long friendId) {
+        userService.deleteFromFriends(friendId);
+        return "success";
     }
 
     @GetMapping("/auth/login")

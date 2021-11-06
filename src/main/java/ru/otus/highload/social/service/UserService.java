@@ -15,7 +15,11 @@ public interface UserService {
 
     void addToFriends(long friendId);
 
-    void removeFromFriends(long friendId);
+    void deleteFromFriends(long friendId);
 
     void enrichWithFriends(UserWithFriendsDto userWithFriendsDto);
+
+    boolean isUserFriend(long id);
+
+    boolean isUserNotFriend(long id);
 }

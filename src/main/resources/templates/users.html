@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:custom="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -11,32 +11,43 @@
 <div th:object="${userDto}">
     <table>
         <tr>
-            <td>login: </td>
+            <td>login:</td>
             <td><span th:text="*{login}"></span></td>
         </tr>
         <tr>
-            <td>firstName: </td>
+            <td>firstName:</td>
             <td><span th:text="*{firstName}"></span></td>
         </tr>
         <tr>
-            <td>lastName: </td>
+            <td>lastName:</td>
             <td><span th:text="*{lastName}"></span></td>
         </tr>
         <tr>
-            <td>age: </td>
+            <td>age:</td>
             <td><span th:text="*{age}"></span></td>
         </tr>
         <tr>
-            <td>gender: </td>
+            <td>gender:</td>
             <td><span th:text="*{gender}"></span></td>
         </tr>
         <tr>
-            <td>interests: </td>
+            <td>interests:</td>
             <td><span th:text="*{interests}"></span></td>
         </tr>
         <tr>
-            <td>city: </td>
+            <td>city:</td>
             <td><span th:text="*{city}"></span></td>
+        </tr>
+        <br>
+        <tr th:if="${@userServiceImpl.isUserNotFriend(__*{id}__)}">
+            <td><form th:action="@{/add-to-friends/{friend-id}(friend-id=*{id})}" method="POST">
+                <button type="submit">Add to friends</button>
+            </form></td>
+        </tr>
+        <tr th:if="${@userServiceImpl.isUserFriend(__*{id}__)}">
+            <td><form th:action="@{/delete-from-friends/{friend-id}(friend-id=*{id})}" method="POST">
+                <button type="submit">Delete from friends</button>
+            </form></td>
         </tr>
     </table>
     <br>
@@ -50,10 +61,11 @@
     <br>
 </div>
 <br>
+<br>
 Visit page by login:
 <form action="/users" method="get">
-    <input type="hidden" name="action" value="find-by-login" />
-    <input name="value" value="" />
+    <input type="hidden" name="action" value="find-by-login"/>
+    <input name="value" value=""/>
     <br>
     <button type="submit">Find</button>
 </form>

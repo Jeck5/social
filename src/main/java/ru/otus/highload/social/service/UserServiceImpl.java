@@ -17,6 +17,7 @@ import ru.otus.highload.social.repository.FriendsRepository;
 import ru.otus.highload.social.repository.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void removeFromFriends(long friendId) {
+    public void deleteFromFriends(long friendId) {
         Long currentUserId = getCurrentUserId();
         if (currentUserId == friendId || !friendsRepository.friendRecordExists(currentUserId, friendId)) {
             throw new UnsupportedOperationException(
@@ -74,6 +75,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public void enrichWithFriends(UserWithFriendsDto userWithFriendsDto) {
         userWithFriendsDto.setFriends(userRepository.findAllFriends(userWithFriendsDto.getId()));
+    }
+
+    @Override
+    public boolean isUserFriend(long id) {
+        return friendsRepository.friendRecordExists(getCurrentUserId(), id);
+    }
+
+    @Override
+    public boolean isUserNotFriend(long id) {
+        return !friendsRepository.friendRecordExists(getCurrentUserId(), id) && !Objects.equals(id, getCurrentUserId());
     }
 
     private Long getCurrentUserId() {
