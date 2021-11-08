@@ -22,4 +22,5 @@ public interface UserService {
     boolean isUserFriend(long id);
 
     boolean isUserNotFriend(long id);
+    String getCurrentUserLogin();
 }

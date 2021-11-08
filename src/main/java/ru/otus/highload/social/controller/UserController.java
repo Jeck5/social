@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
-import java.util.UUID;
-
-import static java.util.Arrays.asList;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,48 +39,51 @@ public class UserController {
     }
 
     @SneakyThrows
+    @GetMapping("/current-user")
+    @PreAuthorize("hasAuthority('users:read')")
+    void getCurrentLogin(HttpServletResponse response) {
+        redirectToCurrentUserPage(response);
+    }
+
+    @SneakyThrows
+    @GetMapping("/not-found")
+    @PreAuthorize("hasAuthority('users:read')")
+    String getNotFound() {
+        return "not-found";
+    }
+
+    @SneakyThrows
     @GetMapping("/users")
-        //TODO secure?, TODO check exists
+    @PreAuthorize("hasAuthority('users:read')")
     void find(@RequestParam("action") @NotEmpty String action, @RequestParam("value") @NotEmpty String value,
               HttpServletResponse response) {
 
         if (action.equalsIgnoreCase(FIND_BY_LOGIN)) {
             User user = userService.getUserByLogin(value);
             if (user == null) {
-                //response.sendRedirect("/users/" + userService.); //TODO not empty page or sth else when not found
-                return;
+                response.sendRedirect("/not-found");
+            } else {
+                response.sendRedirect("/users/" + value);
             }
-            //TODO when error stay here + global error or filed error like with password in example
-            response.sendRedirect("/users/" + value);
         } else {
             throw new UnsupportedOperationException(action + " action is not supported");
         }
     }
 
-    @PreAuthorize("hasAuthority('users:read')") //TODO search?
-    @GetMapping("/all")
-    List<UUID> getPages() {
-        return asList(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
-    }
-
-    @PreAuthorize("hasAuthority('users:read')")
-    @GetMapping("/suc")
-    String getPageSuccess() {
-        return "success";
-    }
-
+    @SneakyThrows
     @PreAuthorize("hasAuthority('users:read')")
     @PostMapping("/add-to-friends/{friend-id}")
-    String addUserToFriends(@PathVariable("friend-id") long friendId) {
+    void addUserToFriends(@PathVariable("friend-id") long friendId, HttpServletResponse response) {
         userService.addToFriends(friendId);
-        return "success";
+        redirectToCurrentUserPage(response);
     }
 
+    @SneakyThrows
     @PreAuthorize("hasAuthority('users:read')")
     @PostMapping("/delete-from-friends/{friend-id}")
-    String deleteUserFromFriends(@PathVariable("friend-id") long friendId) {
+    void deleteUserFromFriends(@PathVariable("friend-id") long friendId, HttpServletResponse response) {
         userService.deleteFromFriends(friendId);
-        return "success";
+        redirectToCurrentUserPage(response);
     }
 
     @GetMapping("/auth/login")
@@ -96,11 +96,6 @@ public class UserController {
         UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
         return "register";
-    }
-
-    @GetMapping("/auth/success")
-    public String getSuccessPage() {
-        return "success";
     }
 
     @PostMapping("/auth/register")
@@ -118,6 +113,10 @@ public class UserController {
         request.login(userDto.getLogin(), userDto.getPassword());
         redirectAttributes.addAttribute("login", user.getLogin());
         return "redirect:/users/{login}"; //TODO forward vs redirect
+    }
+
+    private void redirectToCurrentUserPage(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/users/" + userService.getCurrentUserLogin());
     }
 
     private User userFromDto(UserDto userDto) {

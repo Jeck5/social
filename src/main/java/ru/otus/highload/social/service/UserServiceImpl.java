@@ -87,8 +87,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return !friendsRepository.friendRecordExists(getCurrentUserId(), id) && !Objects.equals(id, getCurrentUserId());
     }
 
+    @Override
+    public String getCurrentUserLogin() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
     private Long getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return getUserByLogin(authentication.getName()).getId();
+        return getUserByLogin(getCurrentUserLogin()).getId();
     }
 }
