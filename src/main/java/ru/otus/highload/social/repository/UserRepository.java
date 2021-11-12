@@ -11,7 +11,5 @@ public interface UserRepository {
 
     User saveUser(User user);
 
-    List<User> getAllUsers();
-
     List<FriendDto> findAllFriends(Long id);
 }

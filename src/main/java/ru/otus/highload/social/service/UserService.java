@@ -11,8 +11,6 @@ public interface UserService {
 
     User saveUser(User user);
 
-    List<User> getAllUsers();
-
     void addToFriends(long friendId);
 
     void deleteFromFriends(long friendId);
@@ -22,5 +20,6 @@ public interface UserService {
     boolean isUserFriend(long id);
 
     boolean isUserNotFriend(long id);
+
     String getCurrentUserLogin();
 }

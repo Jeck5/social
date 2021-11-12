@@ -29,7 +29,7 @@ public class UserController {
     private final ApplicationContext applicationContext;
 
     @GetMapping("/users/{login}")
-        //TODO secure?
+    @PreAuthorize("hasAuthority('users:read')")
     String getByLogin(@PathVariable("login") String login, Model model) {
         User user = userService.getUserByLogin(login);
         UserWithFriendsDto userWithFriendsDto = dtoFromUser(user);
@@ -112,7 +112,7 @@ public class UserController {
         userService.saveUser(user);
         request.login(userDto.getLogin(), userDto.getPassword());
         redirectAttributes.addAttribute("login", user.getLogin());
-        return "redirect:/users/{login}"; //TODO forward vs redirect
+        return "redirect:/users/{login}";
     }
 
     private void redirectToCurrentUserPage(HttpServletResponse response) throws IOException {
@@ -128,7 +128,7 @@ public class UserController {
                 .login(userDto.getLogin())
                 .interests(userDto.getInterests())
                 .gender(userDto.getGender())
-                .password(userDto.getPassword())//TODO when encode ?
+                .password(userDto.getPassword())
                 .build();
     }
 

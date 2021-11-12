@@ -46,11 +46,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<User> getAllUsers() { //TODO delete?
-        return userRepository.getAllUsers();
-    }
-
-    @Override
     public void addToFriends(long friendId) {
         Long currentUserId = getCurrentUserId();
         if (currentUserId == friendId || friendsRepository.friendRecordExists(currentUserId, friendId)) {

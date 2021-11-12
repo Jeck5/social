@@ -41,16 +41,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public User saveUser(User user) {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
-        insertUser.setTableName("users"); //TODO here?
-        insertUser.setGeneratedKeyName("id");
         Number newKey = insertUser.executeAndReturnKey(parameterSource);
         user.setId(newKey.longValue());
         return user;
-    }
-
-    @Override
-    public List<User> getAllUsers() {
-        return null;//TODO needed?
     }
 
     @Override

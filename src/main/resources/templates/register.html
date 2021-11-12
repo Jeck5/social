@@ -3,57 +3,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <style>
+      .error {
+        color: red;
+    }
+
+    </style>
     <title>Registration page</title>
 </head>
 <body>
 <h1>Registration page</h1>
 <form action="/auth/register" th:object="${userDto}" method="POST" enctype="utf8">
     <div>
-        <label th:text="login">login</label><br>
+        <label th:text="login">login</label>*<br>
         <input th:field="*{login}"/>
-        <p th:each="error : ${#fields.errors('login')}"
+        <p class="error" th:each="error : ${#fields.errors('login')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="password">password</label><br>
+        <label th:text="password">password</label>*<br>
         <input type="password" th:field="*{password}"/>
-        <p th:each="error : ${#fields.errors('password')}"
+        <p class="error" th:each="error : ${#fields.errors('password')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="firstName">first</label><br>
+        <label th:text="firstName">first</label>*<br>
         <input th:field="*{firstName}"/>
-        <p th:each="error: ${#fields.errors('firstName')}"
+        <p class="error" th:each="error: ${#fields.errors('firstName')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="lastName">last</label><br>
+        <label th:text="lastName">last</label>*<br>
         <input th:field="*{lastName}"/>
-        <p th:each="error : ${#fields.errors('lastName')}"
+        <p class="error" th:each="error : ${#fields.errors('lastName')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
         <label th:text="age">age</label><br>
         <input th:field="*{age}"/>
-        <p th:each="error : ${#fields.errors('age')}"
+        <p class="error" th:each="error : ${#fields.errors('age')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="gender">gender</label><br>
+        <label th:text="gender">gender</label>(F or M)<br>
         <input th:field="*{gender}"/>
-        <p th:each="error : ${#fields.errors('gender')}"
+        <p class="error" th:each="error : ${#fields.errors('gender')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
         <label th:text="interests">interests</label><br>
         <input th:field="*{interests}"/>
-        <p th:each="error : ${#fields.errors('interests')}"
+        <p class="error" th:each="error : ${#fields.errors('interests')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="city">city</label><br>
+        <label th:text="city">city</label>*<br>
         <input th:field="*{city}"/>
-        <p th:each="error : ${#fields.errors('city')}"
+        <p class="error" th:each="error : ${#fields.errors('city')}"
            th:text="${error}">Validation error</p>
     </div>
     <br>

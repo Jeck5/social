@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/auth/register", "/auth/confirm").permitAll()
+                .antMatchers("/", "/auth/register", "/auth/confirm", "/styles/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler(){
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new MySimpleUrlAuthenticationSuccessHandler();
     }
 }

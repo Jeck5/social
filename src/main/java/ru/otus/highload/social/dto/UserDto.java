@@ -13,12 +13,13 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class UserDto { //TODO validation processing?
+public class UserDto {
 
     Long id;
 
     @Size(min = 3, max = 40)
     String login;
+
     @Size(min = 3)
     String password;
 
