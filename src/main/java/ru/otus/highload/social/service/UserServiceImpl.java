@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.highload.social.dto.UserDto;
 import ru.otus.highload.social.dto.UserWithFriendsDto;
 import ru.otus.highload.social.model.Role;
 import ru.otus.highload.social.model.SecurityUser;
@@ -85,6 +86,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public String getCurrentUserLogin() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public List<UserDto> findUsersByNames(String firstName, String lastName) {
+        return userRepository.findUsersByNames(firstName, lastName);
     }
 
     private Long getCurrentUserId() {

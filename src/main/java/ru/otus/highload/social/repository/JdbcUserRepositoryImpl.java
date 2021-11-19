@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.otus.highload.social.dto.FriendDto;
+import ru.otus.highload.social.dto.UserDto;
 import ru.otus.highload.social.model.User;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     private static final BeanPropertyRowMapper<User> USER_ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
     private static final BeanPropertyRowMapper<FriendDto> FRIEND_ROW_MAPPER = BeanPropertyRowMapper.newInstance(FriendDto.class);
+
+    private static final BeanPropertyRowMapper<UserDto> USER_SEARCH_ROW_MAPPER = BeanPropertyRowMapper.newInstance(UserDto.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -51,5 +54,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return jdbcTemplate.query("SELECT id, login FROM users WHERE id IN( " +
                 "SELECT id1 FROM friends where id2=? UNION ALL " +
                 "SELECT id2 FROM friends where id1=?)", FRIEND_ROW_MAPPER, id, id);
+    }
+
+    @Override
+    public List<UserDto> findUsersByNames(String firstName, String lastName) {
+        return jdbcTemplate.query("SELECT id, login, first_name, last_name FROM users WHERE " +
+                "first_name like ? and last_name like ? ", USER_SEARCH_ROW_MAPPER, firstName + "%", lastName + "%");
     }
 }

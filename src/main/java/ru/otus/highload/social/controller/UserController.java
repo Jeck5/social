@@ -19,12 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     public static final String FIND_BY_LOGIN = "find-by-login";
+    public static final String FIND_BY_NAME = "find-by-name";
     private final UserService userService;
     private final ApplicationContext applicationContext;
 
@@ -52,6 +54,20 @@ public class UserController {
         return "not-found";
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAuthority('users:read')")
+    String getSearchResults(@RequestParam("value") @NotEmpty String value, Model model) {
+        int spaceIndex = value.indexOf(' ');
+        if (spaceIndex <= 0 || spaceIndex == value.length() - 1) {
+            throw new UnsupportedOperationException("can't find without spaces or when space is first or last");
+        }
+        String firstName = value.substring(0, spaceIndex);
+        String lastName = value.substring(spaceIndex + 1);
+        List<UserDto> users = userService.findUsersByNames(firstName, lastName);
+        model.addAttribute("users", users);
+        return "search";
+    }
+
     @SneakyThrows
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('users:read')")
@@ -65,6 +81,8 @@ public class UserController {
             } else {
                 response.sendRedirect("/users/" + value);
             }
+        } else if (action.equalsIgnoreCase(FIND_BY_NAME)) {
+            response.sendRedirect("/search?value=" + value);
         } else {
             throw new UnsupportedOperationException(action + " action is not supported");
         }

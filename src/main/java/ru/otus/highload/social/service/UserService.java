@@ -1,5 +1,6 @@
 package ru.otus.highload.social.service;
 
+import ru.otus.highload.social.dto.UserDto;
 import ru.otus.highload.social.dto.UserWithFriendsDto;
 import ru.otus.highload.social.model.User;
 
@@ -22,4 +23,6 @@ public interface UserService {
     boolean isUserNotFriend(long id);
 
     String getCurrentUserLogin();
+
+    List<UserDto> findUsersByNames(String firstName, String lastName);
 }

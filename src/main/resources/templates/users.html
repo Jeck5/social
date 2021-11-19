@@ -70,6 +70,15 @@ Visit page by login:
     <button type="submit">Find</button>
 </form>
 <br>
+<br>
+Find users by first and last name:
+<form action="/users" method="get">
+    <input type="hidden" name="action" value="find-by-name"/>
+    <input name="value" value=""/>
+    <br>
+    <button type="submit">Find</button>
+</form>
+<br>
 <form action="/auth/logout" method="POST">
     <button type="submit">Logout</button>
 </form>

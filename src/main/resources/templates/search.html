@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users search page</title>
+</head>
+<body>
+<h1>Users search</h1>
+TODO search
+<br>
+<table style="color: green" id="each">
+    <tr th:each="user : *{users}">
+        <td><a th:href="@{/users/{path}(path=${user.login})}">[[${user.login}]]</a></td>
+        <td>[[${user.firstName}]]</td>
+        <td>[[${user.lastName}]]</td>
+    </tr>
+</table>
+<br>
+<form action="/current-user" method="GET">
+    <button type="submit">Your page</button>
+</form>
+<br>
+<form action="/auth/logout" method="POST">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
