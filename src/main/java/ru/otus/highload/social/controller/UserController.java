@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -82,7 +85,7 @@ public class UserController {
                 response.sendRedirect("/users/" + value);
             }
         } else if (action.equalsIgnoreCase(FIND_BY_NAME)) {
-            response.sendRedirect("/search?value=" + value);
+            response.sendRedirect("/search?value=" + encodeParam(value));
         } else {
             throw new UnsupportedOperationException(action + " action is not supported");
         }
@@ -162,5 +165,11 @@ public class UserController {
                 .login(user.getLogin())
                 .build();
     }
+
+
+    private String encodeParam(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+    }
+
 
 }

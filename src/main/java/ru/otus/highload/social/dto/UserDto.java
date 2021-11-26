@@ -29,7 +29,7 @@ public class UserDto {
     @NotEmpty
     String lastName;
 
-    int age;
+    Integer age;
 
     Gender gender;
 

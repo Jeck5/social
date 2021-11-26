@@ -23,7 +23,7 @@ public class User {
 
     String lastName;
 
-    int age;
+    Integer age;
 
     Gender gender;
 
