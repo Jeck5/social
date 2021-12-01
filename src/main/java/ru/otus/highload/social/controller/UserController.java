@@ -2,6 +2,7 @@ package ru.otus.highload.social.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,13 @@ import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     public static final String FIND_BY_LOGIN = "find-by-login";
@@ -66,7 +69,9 @@ public class UserController {
         }
         String firstName = value.substring(0, spaceIndex);
         String lastName = value.substring(spaceIndex + 1);
+        log.info("Start search by {}, {}, time: {}", firstName, lastName, Instant.now());
         List<UserDto> users = userService.findUsersByNames(firstName, lastName);
+        log.info("End search by {}, {}, time: {}", firstName, lastName, Instant.now());
         model.addAttribute("users", users);
         return "search";
     }

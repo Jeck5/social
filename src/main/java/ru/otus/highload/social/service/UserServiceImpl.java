@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> findUsersByNames(String firstName, String lastName) {
         return userRepository.findUsersByNames(firstName, lastName);
     }

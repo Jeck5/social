@@ -59,6 +59,6 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     public List<UserDto> findUsersByNames(String firstName, String lastName) {
         return jdbcTemplate.query("SELECT id, login, first_name, last_name FROM users WHERE " +
-                "first_name like ? and last_name like ? ", USER_SEARCH_ROW_MAPPER, firstName + "%", lastName + "%");
+                "first_name like ? and last_name like ? order by id", USER_SEARCH_ROW_MAPPER, firstName + "%", lastName + "%");
     }
 }
