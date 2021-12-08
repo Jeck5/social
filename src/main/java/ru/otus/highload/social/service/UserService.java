@@ -24,5 +24,7 @@ public interface UserService {
 
     String getCurrentUserLogin();
 
+    Long getCurrentUserId();
+
     List<UserDto> findUsersByNames(String firstName, String lastName);
 }

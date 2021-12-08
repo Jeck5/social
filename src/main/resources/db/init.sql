@@ -27,7 +27,7 @@ CREATE TABLE dialogs
   id			      BIGINT 		       NOT NULL AUTO_INCREMENT,
   name                VARCHAR(200)         NOT NULL UNIQUE,
   creator_id	      BIGINT 			   NOT NULL,
-  creation_timestamp  DATETIME             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_timestamp  DATETIME             DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (creator_id)  REFERENCES users (id)
 );
@@ -46,7 +46,7 @@ CREATE TABLE messages
   id			      BIGINT 		       NOT NULL AUTO_INCREMENT,
   content             TEXT                 NOT NULL,
   user_id	          BIGINT 			   NOT NULL,
-  creation_timestamp  DATETIME             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_timestamp  DATETIME             DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)  REFERENCES users (id)
 );

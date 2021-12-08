@@ -40,14 +40,18 @@
         </tr>
         <br>
         <tr th:if="${@userServiceImpl.isUserNotFriend(__*{id}__)}">
-            <td><form th:action="@{/add-to-friends/{friend-id}(friend-id=*{id})}" method="POST">
-                <button type="submit">Add to friends</button>
-            </form></td>
+            <td>
+                <form th:action="@{/add-to-friends/{friend-id}(friend-id=*{id})}" method="POST">
+                    <button type="submit">Add to friends</button>
+                </form>
+            </td>
         </tr>
         <tr th:if="${@userServiceImpl.isUserFriend(__*{id}__)}">
-            <td><form th:action="@{/delete-from-friends/{friend-id}(friend-id=*{id})}" method="POST">
-                <button type="submit">Delete from friends</button>
-            </form></td>
+            <td>
+                <form th:action="@{/delete-from-friends/{friend-id}(friend-id=*{id})}" method="POST">
+                    <button type="submit">Delete from friends</button>
+                </form>
+            </td>
         </tr>
     </table>
     <br>
@@ -58,6 +62,17 @@
             <td><a th:href="@{/users/{path}(path=${friend.login})}">[[${friend.login}]]</a></td>
         </tr>
     </table>
+    <br>
+    <br>
+    Dialogs:
+    <br>
+    TODO implement show
+    <br>
+    <form action="/dialogs" method="post">
+        <input name="name" value=""/>
+        <br>
+        <button type="submit">New dialog</button>
+    </form>
     <br>
 </div>
 <br>

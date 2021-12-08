@@ -94,7 +94,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findUsersByNames(firstName, lastName);
     }
 
-    private Long getCurrentUserId() {
+    @Override
+    @Transactional(readOnly = true)
+    public Long getCurrentUserId() {
         return getUserByLogin(getCurrentUserLogin()).getId();
     }
 }

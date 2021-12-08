@@ -9,11 +9,20 @@ import javax.sql.DataSource;
 @Configuration
 public class JdbcConfig {
 
-    @Bean
-    SimpleJdbcInsert simpleJdbcInsert(DataSource dataSource) {
+    @Bean("insertUser")
+    SimpleJdbcInsert simpleJdbcInsertUser(DataSource dataSource) {
         SimpleJdbcInsert insertUser = new SimpleJdbcInsert(dataSource);
         insertUser.setTableName("users");
         insertUser.setGeneratedKeyName("id");
         return insertUser;
     }
+
+    @Bean("insertDialog")
+    SimpleJdbcInsert simpleJdbcInsertDialog(DataSource dataSource) {
+        SimpleJdbcInsert insertUser = new SimpleJdbcInsert(dataSource);
+        insertUser.setTableName("dialogs");
+        insertUser.setGeneratedKeyName("id");
+        return insertUser;
+    }
+
 }
