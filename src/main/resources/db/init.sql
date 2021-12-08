@@ -21,3 +21,32 @@ CREATE TABLE friends
   FOREIGN KEY (id1)  REFERENCES users (id),
   FOREIGN KEY (id2)  REFERENCES users (id)
 );
+
+CREATE TABLE dialogs
+(
+  id			      BIGINT 		       NOT NULL AUTO_INCREMENT,
+  name                VARCHAR(200)         NOT NULL UNIQUE,
+  creator_id	      BIGINT 			   NOT NULL,
+  creation_timestamp  DATETIME             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (creator_id)  REFERENCES users (id)
+);
+
+CREATE TABLE users_dialogs
+(
+  user_id			   BIGINT 		       NOT NULL,
+  dialog_id			   BIGINT 		       NOT NULL,
+  PRIMARY KEY (user_id, dialog_id),
+  FOREIGN KEY (user_id)  REFERENCES users (id),
+  FOREIGN KEY (dialog_id)  REFERENCES dialogs (id)
+);
+
+CREATE TABLE messages
+(
+  id			      BIGINT 		       NOT NULL AUTO_INCREMENT,
+  content             TEXT                 NOT NULL,
+  user_id	          BIGINT 			   NOT NULL,
+  creation_timestamp  DATETIME             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id)  REFERENCES users (id)
+);
